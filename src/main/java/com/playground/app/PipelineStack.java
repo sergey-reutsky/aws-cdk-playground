@@ -88,6 +88,7 @@ public class PipelineStack extends Stack
 					{{
 						put("base-directory", "lambda");
 						put("files", Collections.singletonList("target/lambda-0.1.jar"));
+						put("discard-paths", "yes");
 					}});
 				}}))
 				.environment(BuildEnvironment.builder().buildImage(
