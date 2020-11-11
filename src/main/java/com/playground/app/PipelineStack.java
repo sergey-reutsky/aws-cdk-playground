@@ -87,7 +87,7 @@ public class PipelineStack extends Stack
 					put("artifacts", new HashMap<String, Object>()
 					{{
 						put("base-directory", "lambda");
-						put("files", Collections.singletonList("lambda-0.1.jar"));
+						put("files", Collections.singletonList("target/lambda-0.1.jar"));
 					}});
 				}}))
 				.environment(BuildEnvironment.builder().buildImage(
