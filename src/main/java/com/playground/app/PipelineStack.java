@@ -26,16 +26,16 @@ import java.util.List;
 public class PipelineStack extends Stack
 {
 	// alternate constructor for calls without props.
-	// lambdaCode and repoName are both required.
+	// lambdaCode, repoName and repoOwner are required.
 	public PipelineStack(final App scope, final String id,
-	                     final CfnParametersCode lambdaCode, final String repoName)
+	                     final CfnParametersCode lambdaCode, final String repoName, final String repoOwner)
 	{
-		this(scope, id, null, lambdaCode, repoName);
+		this(scope, id, null, lambdaCode, repoName, repoOwner);
 	}
 
 	@SuppressWarnings("serial")
 	public PipelineStack(final App scope, final String id, final StackProps props,
-	                     final CfnParametersCode lambdaCode, final String repoName)
+	                     final CfnParametersCode lambdaCode, final String repoName, final String repoOwner)
 	{
 		super(scope, id, props);
 
@@ -107,6 +107,7 @@ public class PipelineStack extends Stack
 												.actionName("Source")
 												.branch("master")
 												.repo(repoName)
+												.owner(repoOwner)
 												.oauthToken(secret.getSecretValue())
 												.output(sourceOutput)
 												.build()))
