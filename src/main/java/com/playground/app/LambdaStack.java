@@ -1,6 +1,7 @@
 package com.playground.app;
 
 import software.amazon.awscdk.core.App;
+import software.amazon.awscdk.core.Duration;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
 import software.amazon.awscdk.services.codedeploy.LambdaDeploymentConfig;
@@ -31,7 +32,9 @@ public class LambdaStack extends Stack
 
 		Function func = Function.Builder.create(this, "Lambda")
 				.code(lambdaCode)
-				.handler("com.playground.lambda.Lambda.handleRequest")
+				.functionName("SimpleLambda")
+				.handler("com.playground.lambda.Lambda")
+				.timeout(Duration.seconds(10))
 				.runtime(Runtime.JAVA_8_CORRETTO).build();
 
 		Version version = func.getCurrentVersion();
