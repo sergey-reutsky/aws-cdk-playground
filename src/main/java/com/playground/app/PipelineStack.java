@@ -77,17 +77,20 @@ public class PipelineStack extends Stack
 					{{
 						put("install", new HashMap<String, List<String>>()
 						{{
-							put("commands", Collections.singletonList("cd lambda"));
+							put("commands", Arrays.asList(
+									"cd lambda",
+									"apt-get update -y",
+									"apt-get install -y maven"));
 						}});
 						put("build", new HashMap<String, List<String>>()
 						{{
-							put("commands", Collections.singletonList("mvn package"));
+							put("commands", Collections.singletonList("mvn install"));
 						}});
 					}});
 					put("artifacts", new HashMap<String, Object>()
 					{{
 						put("base-directory", "lambda");
-						put("files", Collections.singletonList("target/lambda-0.1.jar"));
+						put("files", Collections.singletonList("target/lambda-1.0.0.jar"));
 						put("discard-paths", "yes");
 					}});
 				}}))
