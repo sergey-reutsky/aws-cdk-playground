@@ -33,7 +33,7 @@ public class LambdaStack extends Stack
 		Function func = Function.Builder.create(this, "Lambda")
 				.code(lambdaCode)
 				.functionName("SimpleLambda")
-				.handler("com.playground.lambda.Lambda::handleRequest")
+				.handler("com.playground.handler.Handler::handleRequest")
 				.timeout(Duration.seconds(10))
 				.runtime(Runtime.JAVA_8_CORRETTO).build();
 

@@ -90,7 +90,7 @@ public class PipelineStack extends Stack
 					put("artifacts", new HashMap<String, Object>()
 					{{
 						put("base-directory", "lambda");
-						put("files", Collections.singletonList("target/lambda-1.0.0-assembly.zip"));
+						put("files", Collections.singletonList("target/handler-1.0.0-assembly.zip"));
 						put("discard-paths", "yes");
 					}});
 				}}))

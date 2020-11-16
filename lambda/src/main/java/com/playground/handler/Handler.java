@@ -1,10 +1,10 @@
-package com.playground.lambda;
+package com.playground.handler;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-public class Lambda implements RequestHandler<String, String>
+public class Handler implements RequestHandler<String, String>
 {
 
 	@Override

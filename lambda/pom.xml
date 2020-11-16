@@ -49,7 +49,7 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <finalName>lambda-${project.version}</finalName>
+                            <finalName>handler-${project.version}</finalName>
                             <descriptors>
                                 <descriptor>assembly.xml</descriptor>
                             </descriptors>
