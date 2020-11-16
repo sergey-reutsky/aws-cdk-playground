@@ -9,10 +9,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
-        <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+        <maven.resource.plugin.version>3.2.0</maven.resource.plugin.version>
         <aws.lambda.java.core>1.2.1</aws.lambda.java.core>
     </properties>
 
@@ -36,24 +35,38 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Assembler to produce distribution zip -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven.assembly.plugin.version}</version>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resource.plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>zip-assembly</id>
+                        <id>copy-classes</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <finalName>handler-${project.version}</finalName>
-                            <descriptors>
-                                <descriptor>assembly.xml</descriptor>
-                            </descriptors>
-                            <attach>false</attach>
+                            <outputDirectory>${basedir}/target/assembly</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/target/classes</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/assembly/lib</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/target/lib</directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>

@@ -84,14 +84,13 @@ public class PipelineStack extends Stack
 						}});
 						put("build", new HashMap<String, List<String>>()
 						{{
-							put("commands", Collections.singletonList("mvn package"));
+							put("commands", Collections.singletonList("mvn clean package"));
 						}});
 					}});
 					put("artifacts", new HashMap<String, Object>()
 					{{
-						put("base-directory", "lambda");
-						put("files", Collections.singletonList("target/handler-1.0.0-assembly.zip"));
-						put("discard-paths", "yes");
+						put("base-directory", "assembly");
+						put("files", Collections.singletonList("*"));
 					}});
 				}}))
 				.environment(BuildEnvironment.builder().buildImage(
