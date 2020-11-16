@@ -84,13 +84,13 @@ public class PipelineStack extends Stack
 						}});
 						put("build", new HashMap<String, List<String>>()
 						{{
-							put("commands", Collections.singletonList("mvn install"));
+							put("commands", Collections.singletonList("mvn package"));
 						}});
 					}});
 					put("artifacts", new HashMap<String, Object>()
 					{{
 						put("base-directory", "lambda");
-						put("files", Collections.singletonList("target/lambda-1.0.0.jar"));
+						put("files", Collections.singletonList("target/lambda-1.0.0-assembly.zip"));
 						put("discard-paths", "yes");
 					}});
 				}}))
