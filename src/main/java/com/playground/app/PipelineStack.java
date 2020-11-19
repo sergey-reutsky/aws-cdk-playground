@@ -39,9 +39,9 @@ public class PipelineStack extends Stack
 	{
 		super(scope, id, props);
 
-		ISecret secret = Secret.fromSecretNameV2(this, "Secret", "repoOauthToken");
+		final ISecret secret = Secret.fromSecretNameV2(this, "Secret", "repoOauthToken");
 
-		PipelineProject cdkBuild = PipelineProject.Builder.create(this, "CDKBuild")
+		final PipelineProject cdkBuild = PipelineProject.Builder.create(this, "CDKBuild")
 				.buildSpec(BuildSpec.fromObject(new HashMap<String, Object>()
 				{{
 					put("version", "0.2");
@@ -60,7 +60,10 @@ public class PipelineStack extends Stack
 					put("artifacts", new HashMap<String, Object>()
 					{{
 						put("base-directory", "dist");
-						put("files", Collections.singletonList("LambdaStack.template.json"));
+						put("files", Arrays.asList(
+								"PipelineStack.template.json",
+								"LambdaStack.template.json",
+								"ApiGatewayStack.template.json"));
 					}});
 				}}))
 				.environment(BuildEnvironment.builder()
@@ -69,7 +72,7 @@ public class PipelineStack extends Stack
 						.build())
 				.build();
 
-		PipelineProject lambdaBuild = PipelineProject.Builder.create(this, "LambdaBuild")
+		final PipelineProject lambdaBuild = PipelineProject.Builder.create(this, "LambdaBuild")
 				.buildSpec(BuildSpec.fromObject(new HashMap<String, Object>()
 				{{
 					put("version", "0.2");
@@ -97,9 +100,9 @@ public class PipelineStack extends Stack
 						LinuxBuildImage.STANDARD_2_0).build())
 				.build();
 
-		Artifact sourceOutput = new Artifact();
-		Artifact cdkBuildOutput = new Artifact("CdkBuildOutput");
-		Artifact lambdaBuildOutput = new Artifact("LambdaBuildOutput");
+		final Artifact sourceOutput = new Artifact();
+		final Artifact cdkBuildOutput = new Artifact("CdkBuildOutput");
+		final Artifact lambdaBuildOutput = new Artifact("LambdaBuildOutput");
 
 		Pipeline.Builder.create(this, "Pipeline")
 				.stages(Arrays.asList(
