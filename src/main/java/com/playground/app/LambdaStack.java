@@ -17,6 +17,7 @@ public class LambdaStack extends Stack
 
 	// private attribute to hold our Lambda's code, with public getters
 	private final CfnParametersCode lambdaCode;
+	private final Function handler;
 
 	// Constructor without props argument
 	public LambdaStack(final App scope, final String id)
@@ -30,15 +31,15 @@ public class LambdaStack extends Stack
 
 		lambdaCode = CfnParametersCode.fromCfnParameters();
 
-		Function func = Function.Builder.create(this, "Lambda")
+		handler = Function.Builder.create(this, "Lambda")
 				.code(lambdaCode)
 				.functionName("SimpleLambda")
 				.handler("com.playground.handler.Handler::handleRequest")
 				.timeout(Duration.seconds(10))
 				.runtime(Runtime.JAVA_8_CORRETTO).build();
 
-		Version version = func.getCurrentVersion();
-		Alias alias = Alias.Builder.create(this, "LambdaAlias")
+		final Version version = handler.getCurrentVersion();
+		final Alias alias = Alias.Builder.create(this, "LambdaAlias")
 				.aliasName("LambdaAlias")
 				.version(version).build();
 
@@ -50,5 +51,10 @@ public class LambdaStack extends Stack
 	public CfnParametersCode getLambdaCode()
 	{
 		return lambdaCode;
+	}
+
+	public Function getHandlerLambda()
+	{
+		return handler;
 	}
 }

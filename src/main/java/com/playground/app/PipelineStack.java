@@ -132,14 +132,29 @@ public class PipelineStack extends Stack
 								.build(),
 						StageProps.builder()
 								.stageName("Deploy")
-								.actions(Collections.singletonList(
+								.actions(Arrays.asList(
+										CloudFormationCreateUpdateStackAction.Builder.create()
+												.actionName("Pipeline_CFN_Deploy")
+												.runOrder(1)
+												.templatePath(cdkBuildOutput.atPath("PipelineStack.template.json"))
+												.adminPermissions(true)
+												.stackName("PipelineDeploymentStack")
+												.build(),
 										CloudFormationCreateUpdateStackAction.Builder.create()
 												.actionName("Lambda_CFN_Deploy")
+												.runOrder(2)
 												.templatePath(cdkBuildOutput.atPath("LambdaStack.template.json"))
 												.adminPermissions(true)
 												.parameterOverrides(lambdaCode.assign(lambdaBuildOutput.getS3Location()))
 												.extraInputs(Collections.singletonList(lambdaBuildOutput))
 												.stackName("LambdaDeploymentStack")
+												.build(),
+										CloudFormationCreateUpdateStackAction.Builder.create()
+												.actionName("APIGateway_CFN_Deploy")
+												.runOrder(3)
+												.templatePath(cdkBuildOutput.atPath("ApiGatewayStack.template.json"))
+												.adminPermissions(true)
+												.stackName("ApiGatewayDeploymentStack")
 												.build()))
 								.build()))
 				.build();

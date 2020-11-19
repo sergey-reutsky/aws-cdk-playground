@@ -12,6 +12,8 @@ public class Application
 	{
 		final App app = new App();
 		final LambdaStack lambdaStack = new LambdaStack(app, "LambdaStack");
+		final ApiGatewayStack apiGatewayStack = new ApiGatewayStack(app, "ApiGatewayStack",
+				lambdaStack.getHandlerLambda());
 		new PipelineStack(app, "PipelineStack",
 				lambdaStack.getLambdaCode(), REPOSITORY_NAME, REPOSITORY_OWNER);
 
