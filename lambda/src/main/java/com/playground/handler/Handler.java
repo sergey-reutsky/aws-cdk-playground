@@ -24,7 +24,7 @@ public class Handler implements RequestHandler<Map<String,String>, String>
 		logger.log("EVENT TYPE: " + event.getClass().toString());
 
 		Map<String, Object> response = new HashMap<>();
-		response.put("statusCode", "200");
+		response.put("statusCode", 200);
 		response.put("isBase64Encoded", false);
 
 		return gson.toJson(response);
