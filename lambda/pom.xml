@@ -13,6 +13,7 @@
         <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
         <maven.resource.plugin.version>3.2.0</maven.resource.plugin.version>
         <aws.lambda.java.core>1.2.1</aws.lambda.java.core>
+        <google.gson>2.8.6</google.gson>
     </properties>
 
     <build>
@@ -88,6 +89,11 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
             <version>${aws.lambda.java.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${google.gson}</version>
         </dependency>
     </dependencies>
 </project>
