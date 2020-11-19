@@ -61,7 +61,6 @@ public class PipelineStack extends Stack
 					{{
 						put("base-directory", "dist");
 						put("files", Arrays.asList(
-								"PipelineStack.template.json",
 								"LambdaStack.template.json",
 								"ApiGatewayStack.template.json"));
 					}});
@@ -137,15 +136,8 @@ public class PipelineStack extends Stack
 								.stageName("Deploy")
 								.actions(Arrays.asList(
 										CloudFormationCreateUpdateStackAction.Builder.create()
-												.actionName("Pipeline_CFN_Deploy")
-												.runOrder(1)
-												.templatePath(cdkBuildOutput.atPath("PipelineStack.template.json"))
-												.adminPermissions(true)
-												.stackName("PipelineDeploymentStack")
-												.build(),
-										CloudFormationCreateUpdateStackAction.Builder.create()
 												.actionName("Lambda_CFN_Deploy")
-												.runOrder(2)
+												.runOrder(1)
 												.templatePath(cdkBuildOutput.atPath("LambdaStack.template.json"))
 												.adminPermissions(true)
 												.parameterOverrides(lambdaCode.assign(lambdaBuildOutput.getS3Location()))
@@ -154,7 +146,7 @@ public class PipelineStack extends Stack
 												.build(),
 										CloudFormationCreateUpdateStackAction.Builder.create()
 												.actionName("APIGateway_CFN_Deploy")
-												.runOrder(3)
+												.runOrder(2)
 												.templatePath(cdkBuildOutput.atPath("ApiGatewayStack.template.json"))
 												.adminPermissions(true)
 												.stackName("ApiGatewayDeploymentStack")
