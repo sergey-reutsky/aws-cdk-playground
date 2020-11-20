@@ -26,6 +26,8 @@ public class Handler implements RequestHandler<Map<String,String>, String>
 		Map<String, Object> response = new HashMap<>();
 		response.put("statusCode", 200);
 		response.put("isBase64Encoded", false);
+		response.put("headers", "{}");
+		response.put("body", "");
 
 		return gson.toJson(response);
 	}
