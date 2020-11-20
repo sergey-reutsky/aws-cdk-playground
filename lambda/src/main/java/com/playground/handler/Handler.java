@@ -9,13 +9,13 @@ import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Handler implements RequestHandler<Map<String,String>, String>
+public class Handler implements RequestHandler<Map<String,String>, Map<String, Object>>
 {
 
 	final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Override
-	public String handleRequest(Map<String,String> event, Context context)
+	public Map<String, Object> handleRequest(Map<String,String> event, Context context)
 	{
 		final LambdaLogger logger = context.getLogger();
 
@@ -29,6 +29,6 @@ public class Handler implements RequestHandler<Map<String,String>, String>
 		response.put("headers", "{}");
 		response.put("body", "");
 
-		return gson.toJson(response);
+		return response;
 	}
 }
