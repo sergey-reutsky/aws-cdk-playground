@@ -26,7 +26,7 @@ public class Handler implements RequestHandler<Map<String, Object>, Map<String, 
 		Map<String, Object> response = new HashMap<>();
 		response.put("statusCode", 200);
 		response.put("isBase64Encoded", false);
-		response.put("headers", "{}");
+		response.put("headers", "{ \"Content-Type\" : \"application/json\" }");
 		response.put("body", "Success");
 
 		return response;

@@ -7,8 +7,6 @@ import software.amazon.awscdk.services.apigateway.LambdaIntegration;
 import software.amazon.awscdk.services.apigateway.RestApi;
 import software.amazon.awscdk.services.lambda.Function;
 
-import java.util.HashMap;
-
 public class ApiGatewayStack extends Stack
 {
 
@@ -26,9 +24,7 @@ public class ApiGatewayStack extends Stack
 				.build();
 
 		final LambdaIntegration lambdaIntegration = LambdaIntegration.Builder.create(handler)
-				.requestTemplates(new HashMap<String, String>() {{
-					put("application/json", "{ \"statusCode\": \"200\" }");
-				}}).build();
+				.build();
 
 		api.getRoot().addMethod("POST", lambdaIntegration);
 	}
