@@ -26,10 +26,8 @@ public class ApiGatewayStack extends Stack
 				.build();
 
 		final LambdaIntegration lambdaIntegration = LambdaIntegration.Builder.create(handler)
-				.requestTemplates(new HashMap<String, String>() {{
-					put("application/json", "{ \"statusCode\": \"200\" }");
-				}}).build();
+				.build();
 
-		api.getRoot().addMethod("GET", lambdaIntegration);
+		api.getRoot().addMethod("POST", lambdaIntegration);
 	}
 }

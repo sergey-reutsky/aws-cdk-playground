@@ -9,13 +9,13 @@ import com.google.gson.GsonBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Handler implements RequestHandler<Map<String,String>, Map<String, Object>>
+public class Handler implements RequestHandler<Map<String, Object>, Map<String, Object>>
 {
 
 	final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Override
-	public Map<String, Object> handleRequest(Map<String,String> event, Context context)
+	public Map<String, Object> handleRequest(Map<String, Object> event, Context context)
 	{
 		final LambdaLogger logger = context.getLogger();
 
