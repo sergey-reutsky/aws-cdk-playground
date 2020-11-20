@@ -27,7 +27,7 @@ public class Handler implements RequestHandler<Map<String, Object>, Map<String, 
 		response.put("statusCode", 200);
 		response.put("isBase64Encoded", false);
 		response.put("headers", "{}");
-		response.put("body", "");
+		response.put("body", "Success");
 
 		return response;
 	}
