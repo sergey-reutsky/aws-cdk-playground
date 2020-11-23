@@ -30,7 +30,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <mainClass>com.playground.app.Application</mainClass>
+                    <mainClass>com.playground.app.CDKApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
@@ -97,10 +97,9 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.18.0</version>
-            <scope>test</scope>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
         </dependency>
     </dependencies>
 </project>

@@ -61,8 +61,8 @@ public class PipelineStack extends Stack
 					{{
 						put("base-directory", "dist");
 						put("files", Arrays.asList(
-								"LambdaStack.template.json",
-								"ApiGatewayStack.template.json"));
+								"ApiEventHandlerStack.template.json",
+								"ApplicationInfrastructureStack.template.json"));
 					}});
 				}}))
 				.environment(BuildEnvironment.builder()
@@ -71,7 +71,7 @@ public class PipelineStack extends Stack
 						.build())
 				.build();
 
-		final PipelineProject lambdaBuild = PipelineProject.Builder.create(this, "LambdaBuild")
+		final PipelineProject lambdaBuild = PipelineProject.Builder.create(this, "ApiEventHandlerBuild")
 				.buildSpec(BuildSpec.fromObject(new HashMap<String, Object>()
 				{{
 					put("version", "0.2");
@@ -80,7 +80,7 @@ public class PipelineStack extends Stack
 						put("install", new HashMap<String, List<String>>()
 						{{
 							put("commands", Arrays.asList(
-									"cd lambda",
+									"cd ApiEventHandler",
 									"apt-get update -y",
 									"apt-get install -y maven"));
 						}});
@@ -91,7 +91,7 @@ public class PipelineStack extends Stack
 					}});
 					put("artifacts", new HashMap<String, Object>()
 					{{
-						put("base-directory", "lambda/target/assembly");
+						put("base-directory", "ApiEventHandler/target/assembly");
 						put("files", Collections.singletonList("**/*"));
 					}});
 				}}))
@@ -101,7 +101,7 @@ public class PipelineStack extends Stack
 
 		final Artifact sourceOutput = new Artifact();
 		final Artifact cdkBuildOutput = new Artifact("CdkBuildOutput");
-		final Artifact lambdaBuildOutput = new Artifact("LambdaBuildOutput");
+		final Artifact apiEventHandlerBuildOutput = new Artifact("ApiEventHandlerBuildOutput");
 
 		Pipeline.Builder.create(this, "Pipeline")
 				.stages(Arrays.asList(
@@ -121,10 +121,10 @@ public class PipelineStack extends Stack
 								.stageName("Build")
 								.actions(Arrays.asList(
 										CodeBuildAction.Builder.create()
-												.actionName("Lambda_Build")
+												.actionName("ApiEventHandler_Build")
 												.project(lambdaBuild)
 												.input(sourceOutput)
-												.outputs(Collections.singletonList(lambdaBuildOutput)).build(),
+												.outputs(Collections.singletonList(apiEventHandlerBuildOutput)).build(),
 										CodeBuildAction.Builder.create()
 												.actionName("CDK_Build")
 												.project(cdkBuild)
@@ -136,20 +136,18 @@ public class PipelineStack extends Stack
 								.stageName("Deploy")
 								.actions(Arrays.asList(
 										CloudFormationCreateUpdateStackAction.Builder.create()
-												.actionName("Lambda_CFN_Deploy")
-												.runOrder(1)
-												.templatePath(cdkBuildOutput.atPath("LambdaStack.template.json"))
+												.actionName("ApiEventHandler_CFN_Deploy")
+												.templatePath(cdkBuildOutput.atPath("ApiEventHandlerStack.template.json"))
 												.adminPermissions(true)
-												.parameterOverrides(lambdaCode.assign(lambdaBuildOutput.getS3Location()))
-												.extraInputs(Collections.singletonList(lambdaBuildOutput))
-												.stackName("LambdaDeploymentStack")
+												.parameterOverrides(lambdaCode.assign(apiEventHandlerBuildOutput.getS3Location()))
+												.extraInputs(Collections.singletonList(apiEventHandlerBuildOutput))
+												.stackName("ApiEventHandlerDeploymentStack")
 												.build(),
 										CloudFormationCreateUpdateStackAction.Builder.create()
-												.actionName("APIGateway_CFN_Deploy")
-												.runOrder(2)
-												.templatePath(cdkBuildOutput.atPath("ApiGatewayStack.template.json"))
+												.actionName("AppInfrastructure_CFN_Deploy")
+												.templatePath(cdkBuildOutput.atPath("ApplicationInfrastructureStack.template.json"))
 												.adminPermissions(true)
-												.stackName("ApiGatewayDeploymentStack")
+												.stackName("AppInfrastructureDeploymentStack")
 												.build()))
 								.build()))
 				.build();

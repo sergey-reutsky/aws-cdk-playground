@@ -12,38 +12,36 @@ import software.amazon.awscdk.services.lambda.Function;
 import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.Version;
 
-public class LambdaStack extends Stack
+public class ApiEventHandlerStack extends Stack
 {
 
-	// private attribute to hold our Lambda's code, with public getters
 	private final CfnParametersCode lambdaCode;
-	private final Function handler;
+	private final Function apiEventHandler;
 
-	// Constructor without props argument
-	public LambdaStack(final App scope, final String id)
+	public ApiEventHandlerStack(final App scope, final String id)
 	{
 		this(scope, id, null);
 	}
 
-	public LambdaStack(final App scope, final String id, final StackProps props)
+	public ApiEventHandlerStack(final App scope, final String id, final StackProps props)
 	{
 		super(scope, id, props);
 
 		lambdaCode = CfnParametersCode.fromCfnParameters();
 
-		handler = Function.Builder.create(this, "Lambda")
+		apiEventHandler = Function.Builder.create(this, "ApiEventHandler")
 				.code(lambdaCode)
-				.functionName("SimpleLambda")
+				.functionName("ApiEventHandler")
 				.handler("com.playground.handler.Handler::handleRequest")
 				.timeout(Duration.seconds(10))
 				.runtime(Runtime.JAVA_8_CORRETTO).build();
 
-		final Version version = handler.getCurrentVersion();
-		final Alias alias = Alias.Builder.create(this, "LambdaAlias")
-				.aliasName("LambdaAlias")
+		final Version version = apiEventHandler.getCurrentVersion();
+		final Alias alias = Alias.Builder.create(this, "ApiEventHandlerAlias")
+				.aliasName("ApiEventHandlerAlias")
 				.version(version).build();
 
-		LambdaDeploymentGroup.Builder.create(this, "DeploymentGroup")
+		LambdaDeploymentGroup.Builder.create(this, "ApiEventHandlerDeploymentGroup")
 				.alias(alias)
 				.deploymentConfig(LambdaDeploymentConfig.ALL_AT_ONCE).build();
 	}
@@ -53,8 +51,8 @@ public class LambdaStack extends Stack
 		return lambdaCode;
 	}
 
-	public Function getHandlerLambda()
+	public Function getApiEventHandler()
 	{
-		return handler;
+		return apiEventHandler;
 	}
 }
