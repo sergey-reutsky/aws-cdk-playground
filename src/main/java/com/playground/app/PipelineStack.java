@@ -137,6 +137,7 @@ public class PipelineStack extends Stack
 								.actions(Arrays.asList(
 										CloudFormationCreateUpdateStackAction.Builder.create()
 												.actionName("ApiEventHandler_CFN_Deploy")
+												.runOrder(1)
 												.templatePath(cdkBuildOutput.atPath("ApiEventHandlerStack.template.json"))
 												.adminPermissions(true)
 												.parameterOverrides(lambdaCode.assign(apiEventHandlerBuildOutput.getS3Location()))
@@ -145,6 +146,7 @@ public class PipelineStack extends Stack
 												.build(),
 										CloudFormationCreateUpdateStackAction.Builder.create()
 												.actionName("AppInfrastructure_CFN_Deploy")
+												.runOrder(2)
 												.templatePath(cdkBuildOutput.atPath("ApplicationInfrastructureStack.template.json"))
 												.adminPermissions(true)
 												.stackName("AppInfrastructureDeploymentStack")
